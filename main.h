@@ -125,11 +125,11 @@ char *find_path(info_t *, char *, char *);
 /* loophsh.c */
 int loophsh(char **);
 
-/* toem_errors.c */
-void _eputs(char *);
-int _eputchar(char);
-int _putfd(char c, int fd);
-int _putsfd(char *str, int fd);
+/* handleErrors.c */
+void printString(char *str);
+int writeCharacterToStdErr(char);
+int charToFileDescriptor(char c, int fd);
+int printStringToFileDescriptor(char *str, int fd);
 
 /* toem_string.c */
 int _strlen(char *);
@@ -166,12 +166,12 @@ int isDelimiter(char, char *);
 int isAlpha(char);
 int stringToInt(const char *);
 
-/* toem_errors1.c */
-int _erratoi(char *);
-void print_error(info_t *, char *);
-int print_d(int, int);
-char *convert_number(long int, int, int);
-void remove_comments(char *);
+/* handleErrors1.c */
+int convertStringToInteger(char *s);
+void printErrorMessage(info_t *info, char *errorString);
+int printDecimal(int input, int fd);
+char *convertNumberToString(long int num, int base, int flags);
+void removeComments(char *);
 
 /* 2-builtin.c */
 int exitShell(info_t *);

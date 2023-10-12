@@ -20,8 +20,8 @@ int exitShell(info_t *info)
             {
                 info->status = 2;
                 print_error(info, "Illegal number: ");
-                _eputs(info->argv[1]);
-                _eputchar('\n');
+                printString(info->argv[1]);
+                writeCharacterToStdErr('\n');
                 return (1);
             }
             info->err_num = exitCode;
@@ -85,8 +85,8 @@ int changeDirectory(info_t *info)
     if (chdirResult == -1)
     {
         print_error(info, "can't cd to ");
-        _eputs(info->argv[1]);
-        _eputchar('\n');
+        printString(info->argv[1]);
+        writeCharacterToStdErr('\n');
     }
     else
     {
