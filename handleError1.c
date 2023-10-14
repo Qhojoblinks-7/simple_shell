@@ -42,7 +42,7 @@ int convertStringToInteger(char *str)
  * @info: The parameter and return info struct.
  * @errorString: String containing the specified error type.
  */
-void printErrorMessage(info_t *info, char *errorString)
+void printError(info_t *info, char *errorString)
 {
     printString(info->fname);
     printString(": ");

@@ -80,7 +80,7 @@ ssize_t getInput(info_t *info)
 
         while (nextCommandPos < bufferLength) /* Iterate to semicolon or end */
         {
-            if (isCommandChain(info, commandChainBuffer, &nextCommandPos))
+            if (findCommandChain(info, commandChainBuffer, &nextCommandPos))
             {
                 break;
             }
@@ -165,7 +165,7 @@ int getlineFromStdin(info_t *info, char **ptr, size_t *length)
         return (-1);
     }
 
-    newlinePosition = stringLocatechar(buffer + currentIndex, '\n');
+    newlinePosition = stringLocateChar(buffer + currentIndex, '\n');
     size_t charactersToCopy = newlinePosition ? (1 + (unsigned int)(newlinePosition - (buffer + currentIndex))) : bufferLength;
 
     newPointer = customRealloc(currentPointer, charactersRead, charactersRead ? (charactersRead + charactersToCopy) : (charactersToCopy + 1));

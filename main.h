@@ -171,7 +171,7 @@ int stringToInt(const char *);
 
 /* handleErrors1.c */
 int convertStringToInteger(char *s);
-void printErrorMessage(info_t *info, char *errorString);
+void printError(info_t *info, char *errorString);
 int printDecimal(int input, int fd);
 char *convertNumberToString(long int num, int base, int flags);
 void removeComments(char *);

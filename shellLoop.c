@@ -25,7 +25,7 @@ int mainShellLoop(info_t *info, char **av)
             setInfo(info, av);
             builtinResult = findBuiltin(info);
             if (builtinResult == -1)
-                findCommand(info);
+                forkCommand(info);
         } else if (isInteractive(info))
             printNewline();
 
@@ -73,7 +73,7 @@ int findBuiltin(info_t *info)
     return (builtinResult);
 }
 
-void findCommand(info_t *info)
+void forkCommand(info_t *info)
 {
     char *path = NULL;
     int i, argumentCount = 0;
@@ -97,7 +97,7 @@ void findCommand(info_t *info)
         return;
     }
 
-    path = findPath(info, getEnvironmentVariable(info, "PATH="), info->arguments[0]);
+    path = findPath(info, setEnvironmentVariable(info, "PATH="), info->arguments[0]);
     if (path)
     {
         info->path = path;
@@ -105,8 +105,8 @@ void findCommand(info_t *info)
     }
     else
     {
-        if ((isInteractive(info) || getEnvironmentVariable(info, "PATH=") ||
-             info->arguments[0][0] == '/') && isCommand(info, info->arguments[0]))
+        if ((isInteractive(info) || setEnvironmentVariable(info, "PATH=") ||
+             info->arguments[0][0] == '/') && forkCommand(info, info->arguments[0]))
              {
             forkCommand(info);
         }
