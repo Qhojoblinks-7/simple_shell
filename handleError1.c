@@ -46,9 +46,9 @@ void printErrorMessage(info_t *info, char *errorString)
 {
     printString(info->fname);
     printString(": ");
-    printToStdErr(info->line_count, STDERR_FILENO);
+    printToStdErr(info->lineCount, STDERR_FILENO);
     printString(": ");
-    printString(info->argv[0]);
+    printString(info->arguments[0]);
     printString(": ");
     printString(errorString);
 }
@@ -62,7 +62,7 @@ void printErrorMessage(info_t *info, char *errorString)
  */
 int printDecimal(int input, int fd)
 {
-    int (*outputChar)(char) = (fd == STDERR_FILENO) ? writeCharacterToStdErr : _putchar;
+    int (*outputChar)(char) = (fd == STDERR_FILENO) ? writeCharacterToStdErr : printCharacter;
     int i, count = 0;
     unsigned int absoluteValue, current;
 

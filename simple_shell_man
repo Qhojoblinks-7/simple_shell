@@ -1,0 +1,56 @@
+.TH simple_shell 1 "18 October 2023" "1.0" "Simple
+Shell Manual"
+
+.SH NAME
+simple_shell \- Simple shell created in C to interact with a
+Linux operating system.
+
+.SH SYNOPSIS
+.B simple_shell
+[\-hv] [file]
+
+.SH DESCRIPTION
+The \fBsimple_shell\fR is a user-friendly shell program
+for interacting with a Linux operating system. 
+It reads and executes commands from either a file or the
+terminal, providing a command interpreter
+with a wide range of features.
+
+.PP
+The shell accepts a variety of commands, making it versatile
+for both interactive and non-interactive use. 
+It can be used for running commands directly or executing
+scripts stored in files.
+
+.SH OPTIONS
+The following options are supported:
+
+.TP
+.B \-h, \-\-help
+Display help information and exit.
+
+.TP
+.B \-v, \-\-version
+Display the version of the \fBsimple_shell\fR and exit.
+
+.SH EXAMPLES
+.B simple_shell
+Runs the \fBsimple_shell\fR in interactive mode.
+
+.TP
+.B simple_shell \-v
+Displays the version of the \fBsimple_shell\fR.
+
+.TP
+.B simple_shell my_script.sh
+Executes the commands in the file \fBmy_script.sh\fR.
+
+.SH RETURN VALUE
+The \fBsimple_shell\fR returns 0 on success.
+Any other return value indicates an error or failure.
+
+.SH AUTHOR
+Immanuel Eshun Quansah
+
+.SH DATE
+18 October 2023

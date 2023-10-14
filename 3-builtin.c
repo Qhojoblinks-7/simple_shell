@@ -39,7 +39,7 @@ int unsetAlias(info_t *info, char *str)
     *equal_sign_pos = '\0';
 
     result = delete_node_at_index(&(info->alias),
-        get_node_index(info->alias, node_starts_with(info->alias, str, -1)));
+        get_node_index(info->alias, startsWith(info->alias, str, -1)));
 
     *equal_sign_pos = saved_char;
 
@@ -91,13 +91,13 @@ int printAlias(list_t *node)
 
         while (alias_name <= equal_sign_pos)
         {
-            _putchar(*alias_name);
+            printCharacter(*alias_name);
             alias_name++;
         }
 
-        _putchar('\'');
-        _puts(alias_value);
-        _puts("'\n");
+        printCharacter('\'');
+        printString(alias_value);
+        printString("'\n");
 
         return (0);
     }
@@ -130,18 +130,18 @@ int manageAliases(info_t *info)
     }
 
     /*Process alias-related commands*/
-    for (i = 1; info->argv[i]; i++)
+    for (i = 1; info->arguments[i]; i++)
     {
-        equal_sign_pos = _strchr(info->argv[i], '=');
+        equal_sign_pos = _strchr(info->arguments[i], '=');
         if (equal_sign_pos)
         {
             /*Set alias if '=' is found*/
-            set_alias(info, info->argv[i]);
+            set_alias(info, info->arguments[i]);
         }
         else
         {
             /*Print alias if no '=' is found*/
-            print_alias(node_starts_with(info->alias, info->argv[i], '='));
+            print_alias(StartsWith(info->alias, info->arguments[i], '='));
         }
     }
 

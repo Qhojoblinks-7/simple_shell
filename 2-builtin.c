@@ -5,42 +5,40 @@
  *
  * @info: Structure containing potential arguments.
  * Return: the exit status
- * -2 if info->argv[0] is "exit" and an argument is provided.
+ * -2 if info->arguments[0] is "exit" and an argument is provided.
  * 1 if there is an argument, but it's not a valid number.
- * 0 if info->argv[0] is not "exit" or no argument is provided.
+ * 0 if info->arguments[0] is not "exit" or no argument is provided.
  */
 int exitShell(info_t *info)
 {
-    if (strcmp(info->argv[0], "exit") == 0)
+    if (strcmp(info->arguments[0], "exit") == 0)
     {
-        if (info->argv[1])
+        if (info->arguments[1])
         {
-            int exitCode = _erratoi(info->argv[1]);
+            int exitCode = _erratoi(info->arguments[1]);
             if (exitCode == -1)
             {
                 info->status = 2;
                 print_error(info, "Illegal number: ");
-                printString(info->argv[1]);
+                printString(info->arguments[1]);
                 writeCharacterToStdErr('\n');
                 return (1);
             }
-            info->err_num = exitCode;
+            info->errorNumber = exitCode;
             return (-2);
         }
         else
         {
-            info->err_num = -1;
+            info->errorNumber = -1;
             return (-2);
         }
     }
     else
     {
-        return 0;
+        return (0);
     }
 }
 
-#include <unistd.h>
-#include <stdlib.h>
 
 /**
  * changeDirectory - Changes the current directory of the process.
@@ -50,68 +48,70 @@ int exitShell(info_t *info)
  */
 int changeDirectory(info_t *info)
 {
-    char *currentDir, *newDir;
-    int chdirResult;
+    char *currentDir, *newDir, buffer[1024];
+    int chdirRet;
 
-    currentDir = getcwd(NULL, 0); /*Get the current directory*/
-
+    currentDir = getcwd(buffer, 1024);
     if (!currentDir)
     {
-        _puts("Error: Unable to retrieve current directory\n");
-        return (0);
+        printString("TODO: >>getcwd failure emsg here<<\n");
     }
-
-    if (!info->argv[1])
+    
+    if (!info->arguments[1])
     {
-        newDir = _getenv(info, "HOME=");
-    }
-    else if (_strcmp(info->argv[1], "-") == 0)
-    {
-        newDir = _getenv(info, "OLDPWD=");
+        newDir = getEnvironment(info, "HOME=");
         if (!newDir)
         {
-            _puts(currentDir);
-            _putchar('\n');
-            free(currentDir);
-            return (1);
+            chdirRet = chdir((newDir = getEnvironment(info, "PWD=")) ? newDir : "/");
+        }
+        else
+        {
+            chdirRet = chdir(newDir);
         }
     }
+    else if (stringCompare(info->arguments[1], "-") == 0)
+    {
+        if (!getEnvironment(info, "OLDPWD="))
+        {
+            printString(currentDir);
+            printCharacter('\n');
+            return 1;
+        }
+        printString(getEnvironment(info, "OLDPWD="));
+        printCharacter('\n');
+        chdirRet = chdir((newDir = _getenv(info, "OLDPWD=")) ? newDir : "/");
+    }
     else
     {
-        newDir = info->argv[1];
+        chdirRet = chdir(info->arguments[1]);
     }
-    chdirResult = chdir(newDir);
 
-    if (chdirResult == -1)
-    {
-        print_error(info, "can't cd to ");
-        printString(info->argv[1]);
+    if (chdirRet == -1) {
+        printError(info, "can't cd to ");
+        printString(info->arguments[1]);
         writeCharacterToStdErr('\n');
-    }
-    else
-    {
-        _setenv(info, "OLDPWD", currentDir);
-        _setenv(info, "PWD", getcwd(NULL, 0));
+    } else {
+        _setenv(info, "OLDPWD", getEnvironment(info, "PWD="));
+        _setenv(info, "PWD", getcwd(buffer, 1024));
     }
 
-
-    free(currentDir);
-    return 0;
+    return (0);
 }
+
 
 /**
  * Displays a help message for the shell.
  *
- * @param info Structure containing potential arguments.
- * @return Always 0.
+ * @info: Structure containing potential arguments.
+ * Return: Always 0.
  */
 int displayHelp(info_t *info)
 {
-    _puts("Welcome to YourShell Help\n");
-    _puts("Available commands:\n");
-    _puts("  help - Display this help message\n");
-    _puts("  cd - Change the current directory\n");
-    _puts("  exit - Exit the shell\n");
+    printString("Welcome to YourShell Help\n");
+    printString("Available commands:\n");
+    printString("  help - Display this help message\n");
+    printString("  cd - Change the current directory\n");
+    printString("  exit - Exit the shell\n");
 
-    return 0;
+    return (0);
 }
