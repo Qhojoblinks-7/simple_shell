@@ -57,10 +57,10 @@ int isAlpha(char c)
 int stringToInt(const char *s)
 {
 	int result = 0;
-	int sign = 1;
+	int sign = 1, i;
 	int foundNumber = 0;
 
-	for (int i = 0; s[i] != '\0'; i++)
+	for (i = 0; s[i] != '\0'; i++)
 	{
 		if (s[i] == '-')
 		{

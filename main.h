@@ -165,7 +165,7 @@ int befreed(void **);
 
 /* 1-builtin.c */
 int checkIfInteractive(info_t *);
-int isDelimiter(char, char *);
+int isDelimiter(char, const char *);
 int isAlpha(char);
 int stringToInt(const char *);
 
