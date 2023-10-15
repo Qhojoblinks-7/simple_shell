@@ -27,7 +27,7 @@ char *getEnvironment(info_t *info, const char *name)
 
     while (currentNode)
     {
-        char *variableName = stringtartsWith(currentNode->str, name);
+        char *variableName = stringStartsWith(currentNode->str, name);
 
         if (variableName && *variableName)
         {

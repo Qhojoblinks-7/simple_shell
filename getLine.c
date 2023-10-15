@@ -18,13 +18,7 @@ ssize_t inputBuffer(info_t *info, char **buf, size_t *len)
         /* Free any existing buffer */
         free(*buf);
         *buf = NULL;
-        signal(SIGINT, sigintHandler);
-
-        #if USE_GETLINE
-            bytesRead = getInput(buf, &bufferLength, stdin);
-        #else
-            bytesRead = getInput(info, buf, &bufferLength);
-        #endif
+        bytesRead = getInput(info);
 
         if (bytesRead > 0)
         {

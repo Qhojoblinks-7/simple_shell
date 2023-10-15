@@ -89,7 +89,7 @@ int setEnvironmentVariable(info_t *info, char *var, char *value)
 
     while (currentNode)
     {
-        ptr = startsWith(currentNode->str, var);
+        ptr = stringStartsWith(currentNode->str, var);
 
         if (ptr && *ptr == '=')
         {

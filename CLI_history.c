@@ -136,7 +136,7 @@ int renumberHistory(info_t *info)
     while (currentNode)
     {
         currentNode->number = newLineCount++;
-        currentNode = info->next;
+        currentNode = currentNode->next;
     }
     return (info->histcounter = newLineCount);
 }
