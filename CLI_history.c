@@ -42,10 +42,10 @@ int writeHistory(info_t *info)
     free(filename);
     if (fd == -1)
         return (-1);
-    for (currentNode = info->history; currentNode; node = node->next)
+    for (currentNode = info->history; currentNode; currentNode = currentNode->next)
     {
-        printStringToFileDescriptor(node->str, fd);
-        writeToFileDescriptor('\n', fd);
+        printStringToFileDescriptor(currentNode->str, fd);
+        charToFileDescriptor('\n', fd);
     }
     writeToFileDescriptor(BUF_FLUSH, fd);
     close(fd);
@@ -61,7 +61,7 @@ int writeHistory(info_t *info)
 int readHistory(info_t *info)
 {
     int index, last = 0, lineCount = 0;
-    ssize_t fd, readlen, fileSize = 0;
+    ssize_t fd, readLen, fileSize = 0;
     struct stat state;
     char *buffer = NULL, *filename = getHistoryFile(info);
 
@@ -79,19 +79,19 @@ int readHistory(info_t *info)
     buffer = malloc(sizeof(char) * (fileSize + 1));
     if (!buffer)
         return (0);
-    readlen = read(fd, buffer, fileSize);
-    buf[fileSize] = 0;
-    if (readlen <= 0)
+    readLen = read(fd, buffer, fileSize);
+    buffer[fileSize] = 0;
+    if (readLen <= 0)
         return (free(buffer), 0);
     close(fd);
     for (index = 0; index < fileSize; index++)
-        if (buf[index] == '\n')
+        if (buffer[index] == '\n')
         {
-            buf[index] = 0;
+            buffer[index] = 0;
             buildHistoryList(info, buffer + last, lineCount++);
             last = index + 1;
         }
-    if (last != i)
+    if (last != index)
         buildHistoryList(info, buffer + last, lineCount++);
     free(buffer);
     info->histcounter = lineCount;
@@ -105,11 +105,11 @@ int readHistory(info_t *info)
  * buildHistoryList - Adds an entry to the history linked list
  * @info: The parameter struct
  * @buf: The command buffer
- * @linecount: The history linecounter (histcounter)
+ * @lineCount: The history lineCounter (histcounter)
  *
  * Return: Always 0
  */
-int buildHistoryList(info_t *info, char *buf, int linecount)
+int buildHistoryList(info_t *info, char *buf, int lineCount)
 {
     list_t *currentNode = NULL;
 
@@ -131,12 +131,12 @@ int buildHistoryList(info_t *info, char *buf, int linecount)
 int renumberHistory(info_t *info)
 {
     list_t *currentNode = info->history;
-    int newLinecount = 0;
+    int newLineCount = 0;
 
     while (currentNode)
     {
-        node->num = newLinecount++;
-        currentNode = node->next;
+        currentNode->number = newLineCount++;
+        currentNode = info->next;
     }
-    return (info->histcounter = newLinecount);
+    return (info->histcounter = newLineCount);
 }

@@ -9,7 +9,7 @@
 int printEnvironment(info_t *info)
 {
     /*Call a function (printList_str) to display the environment variables*/
-    printList_str(info->env);
+    printList(info->env);
     return 0;
 }
 
@@ -27,7 +27,7 @@ char *getEnvironment(info_t *info, const char *name)
 
     while (currentNode)
     {
-        char *variableName = startsWith(currentNode->str, name);
+        char *variableName = nodeStartsWith(currentNode->str, name);
 
         if (variableName && *variableName)
         {
@@ -84,7 +84,7 @@ int unsetEnvironment(info_t *info)
 
     for (count = 1; count < info->argc; count++)
     {
-        _unsetenv(info, info->arguments[count]);
+        unSetEnvironment(info, info->arguments[count]);
     }
 
     return (0);

@@ -67,7 +67,7 @@ char *findExecutablePath(info_t *info, char *pathString, char *command)
         return (NULL);
     }
 
-    if ((stringLength(command) > 2) && startsWith(command, "./"))
+    if ((stringLength(command) > 2) && stringStartsWith(command, "./"))
     {
         if (isExecutable(info, command))
         {
@@ -91,7 +91,7 @@ char *findExecutablePath(info_t *info, char *pathString, char *command)
                 stringConcat(fullPath, command);
             }
 
-            if (is_executable(info, fullPath))
+            if (isExecutable(info, fullPath))
             {
                 return (fullPath);
             }

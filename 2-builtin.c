@@ -19,7 +19,7 @@ int exitShell(info_t *info)
             if (exitCode == -1)
             {
                 info->status = 2;
-                printErrorr(info, "Illegal number: ");
+                printError(info, "Illegal number: ");
                 printString(info->arguments[1]);
                 writeCharacterToStdErr('\n');
                 return (1);

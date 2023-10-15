@@ -46,7 +46,7 @@ void initializeInfoFromCommandLine(info_t *info, char **commandLineArgs)
 
         info->argc = argumentCount;
 
-        replaceAlias(info);
+        replaceAliases(info);
         replaceVariables(info);
     }
 }
@@ -79,7 +79,7 @@ void freeInfoStructure(info_t *info, int freeAllFields)
         freeStringArray(info->environ);
         info->environ = NULL;
 
-        bfree((void **)info->cmd_buf);
+        befreed((void **)info->cmd_buf);
 
         if (info->readfd > 2)
             close(info->readfd);
