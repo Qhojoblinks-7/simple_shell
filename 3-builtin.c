@@ -9,8 +9,8 @@
  * Return: Always 0.
  */
 int displayHistory(info_t *info) {
-    /*Call a function (print_list) to display the history list*/
-    print_list(info->history);
+    /*Call a function (printList) to display the history list*/
+    printList(info->history);
 
     return (0);
 }
@@ -28,7 +28,7 @@ int unsetAlias(info_t *info, char *str)
     char saved_char;
     int result;
 
-    equal_sign_pos = _strchr(str, '=');
+    equal_sign_pos = stringLocateChar(str, '=');
 
     if (equal_sign_pos == NULL) {
         /*Error: '=' not found in the alias string*/
@@ -38,8 +38,8 @@ int unsetAlias(info_t *info, char *str)
     saved_char = *equal_sign_pos;
     *equal_sign_pos = '\0';
 
-    result = delete_node_at_index(&(info->alias),
-        get_node_index(info->alias, startsWith(info->alias, str, -1)));
+    result = deleteNodeAtIndex(&(info->alias),
+        getNodeIndex(info->alias, nodeStartsWith(info->alias, str, -1)));
 
     *equal_sign_pos = saved_char;
 
@@ -56,7 +56,7 @@ int unsetAlias(info_t *info, char *str)
 int setAlias(info_t *info, char *str) {
     char *equal_sign_pos;
 
-    equal_sign_pos = _strchr(str, '=');
+    equal_sign_pos = stringLocateChar(str, '=');
 
     if (!equal_sign_pos)
     {
@@ -67,12 +67,12 @@ int setAlias(info_t *info, char *str) {
     if (*++equal_sign_pos == '\0')
     {
         /*Error: Value for the alias is empty; unset the alias instead*/
-        return (unset_alias(info, str));
+        return (unsetAlias(info, str));
     }
 
     /*Unset the existing alias and add the new alias to the end of the list*/
-    unset_alias(info, str);
-    return (add_node_end(&(info->alias), str, 0) == NULL);
+    unsetAlias(info, str);
+    return (addNodeEnd(&(info->alias), str, 0) == NULL);
 }
 
 /**
@@ -85,7 +85,7 @@ int printAlias(list_t *node)
 {
     if (node)
     {
-        char *equal_sign_pos = _strchr(node->str, '=');
+        char *equal_sign_pos = stringLocateChar(node->str, '=');
         char *alias_name = node->str;
         char *alias_value = equal_sign_pos + 1;
 
@@ -123,7 +123,7 @@ int manageAliases(info_t *info)
         node = info->alias;
         while (node)
         {
-            print_alias(node);
+            printAlias(node);
             node = node->next;
         }
         return (0);
@@ -132,16 +132,16 @@ int manageAliases(info_t *info)
     /*Process alias-related commands*/
     for (i = 1; info->arguments[i]; i++)
     {
-        equal_sign_pos = _strchr(info->arguments[i], '=');
+        equal_sign_pos = stringLocateChar(info->arguments[i], '=');
         if (equal_sign_pos)
         {
             /*Set alias if '=' is found*/
-            set_alias(info, info->arguments[i]);
+            setAlias(info, info->arguments[i]);
         }
         else
         {
             /*Print alias if no '=' is found*/
-            print_alias(StartsWith(info->alias, info->arguments[i], '='));
+            printAlias(nodeStartsWith(info->alias, info->arguments[i], '='));
         }
     }
 

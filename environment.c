@@ -8,8 +8,8 @@
  */
 int printEnvironment(info_t *info)
 {
-    /*Call a function (print_list_str) to display the environment variables*/
-    print_list_str(info->env);
+    /*Call a function (printList_str) to display the environment variables*/
+    printList_str(info->env);
     return 0;
 }
 
@@ -58,7 +58,7 @@ int setEnvironment(info_t *info)
         return (1);
     }
 
-    if (_setenv(info, info->arguments[1], info->arguments[2]))
+    if (setEnvironmentVariable(info, info->arguments[1], info->arguments[2]))
     {
         return (0);
     }
@@ -104,7 +104,7 @@ int populateEnvironmentList(info_t *info)
     /*Loop through the environ array and add nodes to the environment linked list*/
     for (i = 0; environ[i]; i++)
     {
-        add_node_end(&currentNode, environ[i], 0);
+        addNodeEnd(&currentNode, environ[i], 0);
     }
 
     /*Assign the populated linked list to the info structure*/

@@ -45,9 +45,9 @@ int writeHistory(info_t *info)
     for (currentNode = info->history; currentNode; node = node->next)
     {
         printStringToFileDescriptor(node->str, fd);
-        writeCharToFileDescriptor('\n', fd);
+        writeToFileDescriptor('\n', fd);
     }
-    writeCharToFileDescriptor(BUF_FLUSH, fd);
+    writeToFileDescriptor(BUF_FLUSH, fd);
     close(fd);
     return (1);
 }
@@ -56,12 +56,12 @@ int writeHistory(info_t *info)
  * readHistory - Reads command history from a file
  * @info: The parameter struct
  *
- * Return: The new histcount on success, 0 on failure
+ * Return: The new histcounter on success, 0 on failure
  */
 int readHistory(info_t *info)
 {
-    int index, last = 0, linecount = 0;
-    ssize_t fd, readdlen, fileSize = 0;
+    int index, last = 0, lineCount = 0;
+    ssize_t fd, readlen, fileSize = 0;
     struct stat state;
     char *buffer = NULL, *filename = getHistoryFile(info);
 
@@ -72,7 +72,7 @@ int readHistory(info_t *info)
     free(filename);
     if (fd == -1)
         return (0);
-    if (!fstat(fd, &st))
+    if (!fstat(fd, &state))
         fileSize = state.st_size;
     if (fileSize < 2)
         return (0);
@@ -88,24 +88,24 @@ int readHistory(info_t *info)
         if (buf[index] == '\n')
         {
             buf[index] = 0;
-            buildHistoryList(info, buffer + last, linecount++);
+            buildHistoryList(info, buffer + last, lineCount++);
             last = index + 1;
         }
     if (last != i)
-        buildHistoryList(info, buffer + last, linecount++);
+        buildHistoryList(info, buffer + last, lineCount++);
     free(buffer);
-    info->histcount = linecount;
-    while (info->histcount-- >= HIST_MAX)
+    info->histcounter = lineCount;
+    while (info->histcounter-- >= HIST_MAX)
         deleteNodeAtIndex(&(info->history), 0);
     renumberHistory(info);
-    return (info->histcount);
+    return (info->histcounter);
 }
 
 /**
  * buildHistoryList - Adds an entry to the history linked list
  * @info: The parameter struct
  * @buf: The command buffer
- * @linecount: The history linecount (histcount)
+ * @linecount: The history linecounter (histcounter)
  *
  * Return: Always 0
  */
@@ -115,7 +115,7 @@ int buildHistoryList(info_t *info, char *buf, int linecount)
 
     if (info->history)
         currentNode = info->history;
-    addNodeEnd(&currentNode, buf, linecount);
+    addNodeEnd(&currentNode, buf, lineCount);
 
     if (!info->history)
         info->history = currentNode;
@@ -126,7 +126,7 @@ int buildHistoryList(info_t *info, char *buf, int linecount)
  * renumberHistory - Renumbers the history linked list after changes
  * @info: The parameter struct
  *
- * Return: The new histcount
+ * Return: The new histcounter
  */
 int renumberHistory(info_t *info)
 {
@@ -138,5 +138,5 @@ int renumberHistory(info_t *info)
         node->num = newLinecount++;
         currentNode = node->next;
     }
-    return (info->histcount = newLinecount);
+    return (info->histcounter = newLinecount);
 }

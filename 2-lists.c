@@ -75,7 +75,7 @@ size_t printList(const list_t *head)
 
     while (head)
     {
-        printString(convertNumberToString(head->num, 10, 0));
+        printString(convertNumberToString(head->number, 10, 0));
         printCharacter(':');
         printCharacter(' ');
         if (head->str)
@@ -108,7 +108,7 @@ list_t *nodeStartsWith(list_t *currentNode, char *prefix, char c)
 
     while (currentNode)
     {
-        ptr = startsWith(currentNode->str, prefix);
+        ptr = stringStartsWith(currentNode->str, prefix);
         if (ptr && ((c == -1) || (*ptr == c)))
         {
             return (currentNode);

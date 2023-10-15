@@ -45,7 +45,7 @@ extern char **environ;
  */
 typedef struct liststr
 {
-	int num;
+	int number;
 	char *str;
 	struct liststr *next;
 } list_t;
@@ -68,7 +68,7 @@ typedef struct liststr
  *@envChanged: on if environ was changed
  *@status: the return status of the last exec'd command
  *@cmd_buf: address of pointer to cmd_buf, on if chaining
- *@cmd_buf_type: CMD_type ||, &&, ;
+ *@commandChainType: CMD_type ||, &&, ;
  *@readfd: the fd from which to read line input
  *@histcounter: the history line number count
  */
@@ -138,7 +138,7 @@ char *stringStartsWith(const char *, const char *);
 char *stringConcat(char *, char *);
 
 /* toem_string1.c */
-char *stringCopy(char *, char *);
+char *stringCopy(char *, const char *);
 char *stringDuplicate(const char *);
 void printString(char *);
 int printCharacter(char);
@@ -215,7 +215,7 @@ int setEnvironmentVariable(info_t *info, char *var, char *value);
 char *getHistoryFile(info_t *info);
 int writeHistory(info_t *info);
 int readHistory(info_t *info);
-int buildHistoryList(info_t *info, char *buf, int linecount);
+int buildHistoryList(info_t *info, char *buf, int lineCount);
 int renumberHistory(info_t *info);
 
 /* 1-lists.c */

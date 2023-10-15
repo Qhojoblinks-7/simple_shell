@@ -63,13 +63,13 @@ void printString(char *str) {
         return;
 
     while (str[i] != '\0') {
-        writeCharacter(str[i]);
+        printCharacter(str[i]);
         i++;
     }
 }
 
 /**
- * writeCharacter - writes the character c to stdout
+ * printCharacter - writes the character c to stdout
  * @c: The character to print
  *
  * Return: On success 1.

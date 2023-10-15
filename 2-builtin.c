@@ -15,11 +15,11 @@ int exitShell(info_t *info)
     {
         if (info->arguments[1])
         {
-            int exitCode = _erratoi(info->arguments[1]);
+            int exitCode = convertStringToInteger(info->arguments[1]);
             if (exitCode == -1)
             {
                 info->status = 2;
-                print_error(info, "Illegal number: ");
+                printErrorr(info, "Illegal number: ");
                 printString(info->arguments[1]);
                 writeCharacterToStdErr('\n');
                 return (1);
@@ -79,7 +79,7 @@ int changeDirectory(info_t *info)
         }
         printString(getEnvironment(info, "OLDPWD="));
         printCharacter('\n');
-        chdirRet = chdir((newDir = _getenv(info, "OLDPWD=")) ? newDir : "/");
+        chdirRet = chdir((newDir = getEnvironment(info, "OLDPWD=")) ? newDir : "/");
     }
     else
     {
@@ -91,8 +91,8 @@ int changeDirectory(info_t *info)
         printString(info->arguments[1]);
         writeCharacterToStdErr('\n');
     } else {
-        _setenv(info, "OLDPWD", getEnvironment(info, "PWD="));
-        _setenv(info, "PWD", getcwd(buffer, 1024));
+        setEnvironmentVariable(info, "OLDPWD", getEnvironment(info, "PWD="));
+        setEnvironmentVariable(info, "PWD", getcwd(buffer, 1024));
     }
 
     return (0);

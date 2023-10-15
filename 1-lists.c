@@ -20,7 +20,7 @@ list_t *addNode(list_t **head, const char *str, int number)
         return (NULL);
 
     memorySet((void *)newNode, 0, sizeof(list_t));
-    newNode->num = number;
+    newNode->number = number;
 
     if (str)
     {

@@ -15,7 +15,7 @@ void printString(char *str)
 
     while (str[index] != '\0')
     {
-        writeCharacterToStdErr(str[index]);
+        printCharacterToStdErr(str[index]);
         index++;
     }
 }
