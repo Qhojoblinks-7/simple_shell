@@ -224,6 +224,7 @@ list_t *addNodeEnd(list_t **, const char *, int);
 size_t printListStrings(const list_t *);
 int deleteNodeAtIndex(list_t **, unsigned int);
 void freeList(list_t **);
+void clearInfo(info_t *info);
 
 /* 2-lists.c */
 size_t listLen(const list_t *);
@@ -239,4 +240,5 @@ int replaceAliases(info_t *);
 int replaceVariables(info_t *);
 int replaceString(char **, char *);
 
+char *findPath(info_t *info, const char *pathVar, const char *command);
 #endif

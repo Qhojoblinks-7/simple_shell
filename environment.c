@@ -84,7 +84,7 @@ int unsetEnvironment(info_t *info)
 
     for (count = 1; count < info->argc; count++)
     {
-        printEnvironment(info, info->arguments[count]);
+        printEnvironment(info);
     }
 
     return (0);

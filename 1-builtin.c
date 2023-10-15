@@ -46,7 +46,6 @@ int isAlpha(char c)
 	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) ? 1 : 0;
 }
 
-#include <stdio.h>
 
 /**
  * stringToInt - Converts a string to an integer.
@@ -80,3 +79,4 @@ int stringToInt(const char *s)
 
 	return (result * sign);
 }
+

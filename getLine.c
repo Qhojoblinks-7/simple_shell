@@ -11,7 +11,6 @@
 ssize_t inputBuffer(info_t *info, char **buf, size_t *len)
 {
     ssize_t bytesRead = 0;
-    size_t bufferLength = 0;
 
     if (!*len) /* If there's nothing left in the buffer, fill it */
     {
@@ -70,7 +69,7 @@ ssize_t getInput(info_t *info)
         nextCommandPos = currentPos; /* Initialize new iterator to the current buffer position */
         commandStart = commandChainBuffer + currentPos; /* Get a pointer for return */
 
-        checkCommandChain(info, commandChainBuffer, &nextCommandPos, currentPos, bufferLength);
+        checkCommandChainStatus(info, commandChainBuffer, &nextCommandPos, currentPos, bufferLength);
 
         while (nextCommandPos < bufferLength) /* Iterate to semicolon or end */
         {
@@ -136,7 +135,7 @@ int getlineFromStdin(info_t *info, char **ptr, size_t *length)
 {
     static char buffer[READ_BUF_SIZE];
     static size_t currentIndex = 0, bufferLength = 0;
-    size_t charactersRead = 0;
+    size_t charactersRead = 0, charactersToCopy;
     ssize_t bytesRead = 0;
     char *currentPointer = NULL, *newPointer = NULL, *newlinePosition = NULL;
 
@@ -160,7 +159,7 @@ int getlineFromStdin(info_t *info, char **ptr, size_t *length)
     }
 
     newlinePosition = stringLocateChar(buffer + currentIndex, '\n');
-    size_t charactersToCopy = newlinePosition ? (1 + (unsigned int)(newlinePosition - (buffer + currentIndex))) : bufferLength;
+    charactersToCopy = newlinePosition ? (1 + (unsigned int)(newlinePosition - (buffer + currentIndex))) : bufferLength;
 
     newPointer = customRealloc(currentPointer, charactersRead, charactersRead ? (charactersRead + charactersToCopy) : (charactersToCopy + 1));
 
@@ -175,11 +174,11 @@ int getlineFromStdin(info_t *info, char **ptr, size_t *length)
 
     if (charactersRead)
     {
-        stringConcat(newPointer, buffer + currentIndex, charactersToCopy - currentIndex);
+        stringConcat(newPointer, buffer + currentIndex);
     }
     else
     {
-        stringCopy(newPointer, buffer + currentIndex, charactersToCopy - currentIndex + 1);
+        stringCopy(newPointer, buffer + currentIndex);
     }
 
     charactersRead += charactersToCopy - currentIndex;

@@ -118,7 +118,7 @@ void forkCommand(info_t *info)
     }
 }
 
-void forkCommand(info_t *info)
+/*void forkCommand(info_t *info)
 {
     char *path = NULL;
     int i, argumentCount = 0;
@@ -143,5 +143,25 @@ void forkCommand(info_t *info)
     if (!argumentCount)
     {
         return;
+    }
+}*/
+
+void clearInfo(info_t *info)
+{
+    if (info)
+    {
+        free(info->arg);
+        freeList(info->env);
+        freeList(info->history);
+        freeList(info->alias);
+        free(info->cmd_buf);
+
+        info->arg = NULL;
+        info->env = NULL;
+        info->history = NULL;
+        info->alias = NULL;
+        info->cmd_buf = NULL;
+        
+        free(info);
     }
 }
