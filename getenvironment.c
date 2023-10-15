@@ -37,7 +37,7 @@ int unsetEnvironmentVariable(info_t *info, char *var)
 
     while (currentNode)
     {
-        ptr = startsWith(currentNode->str, var);
+        ptr = stringStartsWith(currentNode->str, var);
 
         if (ptr && *ptr == '=')
         {

@@ -37,7 +37,7 @@ int main(int argc, char **arguments)
     populateEnvironmentList(info);
 
     /*Read command history from a file.*/
-    readhistory(info);
+    readHistory(info);
 
     /*Call the shell function (e.g., mainShellLoop).*/
     mainShellLoop(info, arguments);

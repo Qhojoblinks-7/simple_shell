@@ -27,7 +27,7 @@ char *getEnvironment(info_t *info, const char *name)
 
     while (currentNode)
     {
-        char *variableName = nodeStartsWith(currentNode->str, name);
+        char *variableName = stringtartsWith(currentNode->str, name);
 
         if (variableName && *variableName)
         {
@@ -84,7 +84,7 @@ int unsetEnvironment(info_t *info)
 
     for (count = 1; count < info->argc; count++)
     {
-        unSetEnvironment(info, info->arguments[count]);
+        printEnvironment(info, info->arguments[count]);
     }
 
     return (0);

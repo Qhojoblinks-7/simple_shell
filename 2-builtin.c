@@ -107,11 +107,18 @@ int changeDirectory(info_t *info)
  */
 int displayHelp(info_t *info)
 {
-    printString("Welcome to YourShell Help\n");
-    printString("Available commands:\n");
-    printString("  help - Display this help message\n");
-    printString("  cd - Change the current directory\n");
-    printString("  exit - Exit the shell\n");
-
-    return (0);
+    if (info)
+    {
+        printString("Welcome to YourShell Help\n");
+        printString("Available commands:\n");
+        printString("  help - Display this help message\n");
+        printString("  cd - Change the current directory\n");
+        printString("  exit - Exit the shell\n");
+        return (0);
+    }
+    else
+    {
+        printString("Error: 'info' parameter is NULL\n");
+        return 1; 
+    }
 }

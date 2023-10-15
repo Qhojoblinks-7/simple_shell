@@ -21,9 +21,9 @@ ssize_t inputBuffer(info_t *info, char **buf, size_t *len)
         signal(SIGINT, sigintHandler);
 
         #if USE_GETLINE
-            bytesRead = _getline(buf, &bufferLength, stdin);
+            bytesRead = getInput(buf, &bufferLength, stdin);
         #else
-            bytesRead = _getline(info, buf, &bufferLength);
+            bytesRead = getInput(info, buf, &bufferLength);
         #endif
 
         if (bytesRead > 0)
@@ -80,7 +80,7 @@ ssize_t getInput(info_t *info)
 
         while (nextCommandPos < bufferLength) /* Iterate to semicolon or end */
         {
-            if (findCommandChain(info, commandChainBuffer, &nextCommandPos))
+            if (isChainDelimiter(info, commandChainBuffer, &nextCommandPos))
             {
                 break;
             }
@@ -92,15 +92,15 @@ ssize_t getInput(info_t *info)
         if (currentPos >= bufferLength) /* Reached the end of the buffer? */
         {
             currentPos = bufferLength = 0; /* Reset the position and length */
-            info->cmd_buf_type = CMD_NORM;
+            info->commandChainType = CMD_NORM;
         }
 
         *bufferPtr = commandStart; /* Pass back a pointer to the current command position */
         return (stringLength(commandStart)); /* Return the length of the current command */
     }
 
-    *bufferPtr = commandChainBuffer; /* Not a chain; pass back the buffer from _getline() */
-    return (bytesRead); /* Return the length of the buffer from _getline() */
+    *bufferPtr = commandChainBuffer; /* Not a chain; pass back the buffer from getInput() */
+    return (bytesRead); /* Return the length of the buffer from getInput() */
 }
 
 /**
@@ -131,7 +131,7 @@ ssize_t readBuffer(info_t *info, char *buf, size_t *bufferSize)
 }
 
 /**
- * _getline - Reads the next line of input from STDIN
+ * getInput - Reads the next line of input from STDIN
  * @info: The parameter struct
  * @ptr: A pointer to the buffer, either preallocated or NULL
  * @length: The size of the preallocated ptr buffer if not NULL

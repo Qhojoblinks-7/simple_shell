@@ -15,7 +15,7 @@ int mainShellLoop(info_t *info, char **av)
     while (bytesRead != -1 && builtinResult != -2) 
     {
         clearInfo(info);
-        if (isInteractive(info))
+        if (findBuiltin(info))
             printPrompt();
         printBufferFlush();
 
@@ -26,7 +26,7 @@ int mainShellLoop(info_t *info, char **av)
             builtinResult = findBuiltin(info);
             if (builtinResult == -1)
                 forkCommand(info);
-        } else if (isInteractive(info))
+        } else if (findBuiltin(info))
             printNewline();
 
         freeInfo(info, 0);
@@ -34,7 +34,7 @@ int mainShellLoop(info_t *info, char **av)
 
     writeHistory(info);
     freeInfo(info, 1);
-    if (!isInteractive(info) && info->status)
+    if (!findBuiltin(info) && info->status)
         exit(info->status);
     if (builtinResult == -2)
     {
@@ -105,7 +105,7 @@ void forkCommand(info_t *info)
     }
     else
     {
-        if ((isInteractive(info) || setEnvironmentVariable(info, "PATH=") ||
+        if ((findBuiltin(info) || setEnvironmentVariable(info, "PATH=") ||
              info->arguments[0][0] == '/') && forkCommand(info, info->arguments[0]))
              {
             forkCommand(info);
@@ -118,38 +118,30 @@ void forkCommand(info_t *info)
     }
 }
 
-void forkCommand(info_t *info) {
-    pid_t childPid;
+void forkCommand(info_t *info)
+{
+    char *path = NULL;
+    int i, argumentCount = 0;
 
-    childPid = fork();
-    if (childPid == -1) {
-        /*TODO: Error Handling*/
-        perror("Error:");
-        return;
-    }
-
-    if (childPid == 0)
+    info->path = info->arguments[0];
+    if (info->lineCountFlag == 1)
     {
-        if (execve(info->path, info->arguments, getEnvironment(info)) == -1)
-        {
-            freeInfo(info, 1);
-            if (errno == EACCES) {
-                exit(126);
-            }
-            exit(1);
-        }
-        /*TODO: Error Handling*/
+        info->lineCount++;
+        info->lineCountFlag = 0;
     }
-    else
+    for (i = 0; info->arguments[i]; i++)
     {
-        wait(&(info->status));
-        if (WIFEXITED(info->status))
-        {
-            info->status = WEXITSTATUS(info->status);
-            if (info->status == 126)
+        char *argument = info->arguments[i];
+        for (int j = 0; argument[j]; j++) {
+            if (!isDelimiter(argument[j], " \t\n"))
             {
-                printError(info, "Permission denied\n");
+                argumentCount++;
             }
         }
+    }
+
+    if (!argumentCount)
+    {
+        return;
     }
 }

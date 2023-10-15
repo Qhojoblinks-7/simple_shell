@@ -47,7 +47,7 @@ int writeHistory(info_t *info)
         printStringToFileDescriptor(currentNode->str, fd);
         charToFileDescriptor('\n', fd);
     }
-    writeToFileDescriptor(BUF_FLUSH, fd);
+    charToFileDescriptor(BUF_FLUSH, fd);
     close(fd);
     return (1);
 }
